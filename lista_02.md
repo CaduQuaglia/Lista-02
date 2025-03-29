@@ -253,6 +253,18 @@ Pedidos entre R$50,00 e R$199,99 (inclusive) → "Frete com custo adicional!"
 Pedidos de R$200,00 ou mais → "Frete grátis!"
 ```
 Implemente um pseudocódigo que receba o valor total da compra e exiba a classificação correta do frete para o cliente.
+
+```javascript
+function calcularFrete(pedido){
+    if(pedido < 50){
+        console.log('Frete não disponível!')
+    }else if(pedido <= 199.99){
+        console.log('Frete com custo adicional!')
+    }else{
+        console.log('Frete grátis!')
+    }
+}
+```
 ______
 
 **8)** Considere a implementação da classe base Veiculo em um sistema de modelagem de veículos. Sua tarefa é implementar, utilizando pseudocódigo, as classes derivadas Carro e Moto, que herdam da classe Veiculo, adicionando atributos específicos e métodos para calcular o consumo de combustível de um carro e de uma moto, respectivamente.
@@ -270,6 +282,49 @@ Método CalcularConsumo():
 ```
 Implementação genérica para cálculo de consumo, a ser sobrescrita pelas subclasses.
 Agora, implemente as classes Carro e Moto, garantindo que ambas herdem de Veiculo e possuam métodos específicos para calcular o consumo de combustível com base na quilometragem e eficiência do veículo.
+
+```javascript
+class Veiculo{
+    constructor(modelo, ano){
+        this.modelo = modelo;
+        this.ano = ano;
+    }
+
+    CalcularConsumo(distancia, eficiencia){
+        return distancia/eficiencia
+    }
+}
+
+class Carro extends Veiculo{
+    constructor(modelo, ano, eficiencia){
+        super(modelo, ano)
+        this.eficiencia = eficiencia
+    }
+
+    CalcularConsumo(distancia){
+        let consumo = super.CalcularConsumo(distancia, this.eficiencia)
+        console.log('Consumo do seu carro (' + this.modelo + ', ' + this.ano + '): ' + consumo)
+    }
+}
+
+class Moto extends Veiculo{
+    constructor(modelo, ano, eficiencia){
+        super(modelo, ano)
+        this.eficiencia = eficiencia
+    }
+
+    CalcularConsumo(distancia){
+        let consumo = super.CalcularConsumo(distancia, this.eficiencia)
+        console.log('Consumo da sua moto (' + this.modelo + ', ' + this.ano + '): ' + consumo)
+    }
+}
+
+var corolla = new Carro("Corolla", '2008', 10)
+corolla.CalcularConsumo(120)
+
+var cg = new Moto('CG 160', '2023', 40)
+cg.CalcularConsumo(120)
+```
 ______
 
 **9)** Você é um cientista da NASA e está ajudando no desenvolvimento de um sistema de pouso para sondas espaciais em Marte. Seu objetivo é calcular o tempo necessário para que a sonda reduza sua velocidade até um nível seguro para pouso, considerando uma velocidade inicial de entrada na atmosfera marciana e uma taxa de desaceleração constante causada pelo atrito atmosférico e retrofoguetes.
@@ -283,6 +338,27 @@ Considere a fórumla de atualização velocidade:
     velocidade = velocidadeInicial - desaceleracao * tempo
 ```
 Seu programa deve determinar quanto tempo será necessário para que a sonda atinja uma velocidade segura de pouso, sem ultrapassar os limites estabelecidos.
+
+```javascript
+var velocidadeInicial = 100
+var desaceleracao = 5
+
+var velocidadeMin = 10
+var tempoMax = 20
+
+var velocidade = velocidadeInicial
+var tempo = 0
+while(velocidade>velocidadeMin){
+    tempo++
+    velocidade -= desaceleracao
+}
+if(tempo<tempoMax){
+    console.log('A sonda demora '+tempo+' segundos para ser desacelerada')
+}else{
+    console.log('Não é possível desacelerar a sonda em menos de '+tempoMax+' segundos')
+}
+
+```
 ______
 
 **10)** Em um sistema de análise financeira, as operações de investimento de uma empresa podem ser representadas por matrizes, onde cada linha representa um tipo de investimento e cada coluna representa um período de tempo.
@@ -315,3 +391,53 @@ Escrever("Total de investimentos acumulados:")
 ImprimirMatriz(totalInvestimentos)  
 ```
 Agora, implemente a função MultiplicarMatrizesInvestimento(matrizA, matrizB), que multiplica as duas matrizes, simulando o efeito de diferentes fatores de crescimento e impacto financeiro nos investimentos ao longo do tempo.
+
+```javascript
+var matrizA = [
+    [1  ,2  ,3  ],
+    [5  ,-3 ,7  ],
+    [0  ,6  ,195],
+    [28 ,102,471],
+    [-86,987,3  ],
+    [10, -1, -2],
+    [-9, 6, -8],
+    [-7, -5, 4]
+]
+
+var matrizB = [
+    [4  ,-2 ,5  ,1  ,6  ],
+    [25 ,4  ,1  ,7  ,8  ],
+    [123,65 ,-62,72 ,0  ]
+]
+
+function MultiplicarMatrizesInvestimento(mA, mB){
+    let resultado = 0;
+    let resultadoLinha = [];
+    let mC = [];
+
+    // Confere se o número de colunas da matriz A é igual ao número de linhas da matriz B
+    if (mA[0].length == mB.length){
+        // Itera pelo número de linhas da matriz C para calcular a matriz completa
+        for(let linhaC = 0; linhaC < mA.length; linhaC++){
+            // Itera pelo número de colunas da matriz C para calcular 1 linha completa
+            for(let colunaC = 0; colunaC < mB[0].length; colunaC++){
+                // Calcula 1 célula da matriz C
+                resultado = 0; // Reseta o resultado da célula
+                for(let i = 0; i < mB.length; i++){
+                    resultado += mA[linhaC][i]*mB[i][colunaC];
+                }
+                resultadoLinha.push(resultado);
+            }
+            mC.push([...resultadoLinha]); // Adiciona uma cópia do resultado da linha à matriz C
+            resultadoLinha.length = 0; // Limpa a array de resultado da linha
+        }
+        
+        return mC;
+    }else{
+        console.log('O número de colunas da matriz A deve ser igual ao número de linhas da matriz B')
+    }
+};
+
+console.log(MultiplicarMatrizesInvestimento(matrizA, matrizB))
+```
+
